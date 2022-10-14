@@ -38,16 +38,16 @@ def inputParameters():
         choices=["yes", "no"],
         default="yes",
     )
-    # parser.add_argument(
-    #     "-hB",
-    #     "--historyBhive",
-    #     help="是否使用HistoryDataFile的excel里的Bhive历史数据 is use history Bhive data",
-    #     dest="useBhiveHistoryData",
-    #     type=str,
-    #     required=True,
-    #     choices=["yes", "no"],
-    #     default="yes",
-    # )
+    parser.add_argument(
+        "-m",
+        "--mode",
+        help="指定 或者 无限制",
+        dest="matchMode",
+        type=str,
+        required=True,
+        choices=["指定", "无限制"],
+        default="指定",
+    )
     # parser.add_argument(
     #     "-hl",
     #     "--historyLLVM",
@@ -102,7 +102,7 @@ def inputParameters():
     # glv._set("ProcessNum",args.ProcessNum)
     # glv._set("timeout",args.timeout)
     glv._set("debug",args.debug)
-    # glv._set("useBhiveHistoryData",args.useBhiveHistoryData)
+    glv._set("matchMode",args.matchMode)
     # glv._set("useLLVMHistoryData",args.useLLVMHistoryData)
     # glv._set("KendallIndex",args.KendallIndex)
     # glv._set("useBaselineHistoryData",args.useBaselineHistoryData)
@@ -113,7 +113,7 @@ def inputParameters():
     # passPrint("parameter ProcessNum is : %s" % args.ProcessNum)
     # passPrint("parameter timeout is : %d " % args.timeout)
     passPrint("parameter debug is : %s " % args.debug)
-    # passPrint("parameter useBhiveHistoryData is : %s " % args.useBhiveHistoryData)
+    passPrint("parameter matchMode is : %s " % args.matchMode)
     # passPrint("parameter useLLVMHistoryData is : %s " % args.useLLVMHistoryData)
     # passPrint("parameter KendallIndex is : %s " % args.KendallIndex)
     # passPrint("parameter useBaselineHistoryData is : %s " % args.useBaselineHistoryData)

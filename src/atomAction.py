@@ -46,8 +46,24 @@ from tsjPython.tsjCommonFunc import *
 
 decideMainIconImg = "./Img/main.png"
 decideMainIconRegin = (247, 1006, 200, 50)
-matchImg = "./Img/match.png"
-matchRegin = ()
+matchPageImg = "./Img/match.png"
+matchPageRegin = (724,1000,210,60)
+matchPage2to1Img = "./Img/match2to1.png"
+matchPage2to1Regin = (1000,451,300,100)
+reloginImg = "./Img/relogin.png"
+reloginRegin = (966, 969, 200, 40)
+loginImg = "./Img/login.png"
+loginRegin = (230, 778, 62, 62)
+chooseCardImg = "./Img/chooseCard.png"
+chooseCardRegin = (1790, 259, 58, 58)
+OKImg = "./Img/OK.png"
+OKRegin = (1219, 820, 100, 30)
+matchOKImg = "./Img/matchOK.png"
+matchOKRegin = (1722,600,100,50)
+rematchImg = "./Img/rematch.png"
+rematchRegin = (1150, 994, 180, 40)
+matchendImg = "./Img/matchend.png"
+matchendRegin = (1717, 580, 130, 55)
 
 def getCurrentState():
     state = "loading"
@@ -57,11 +73,52 @@ def getCurrentState():
             decideMainIconImg, region=decideMainIconRegin, confidence=0.8)
         if location is not None:
             state = "mainPage"
+            break 
+        location = pyautogui.locateCenterOnScreen(
+                    OKImg, region=OKRegin, confidence=0.8)
+        if location is not None:
+            state = "OKPage"
             break
         location = pyautogui.locateCenterOnScreen(
-            matchImg, region=matchRegin, confidence=0.8)
+                chooseCardImg, region=chooseCardRegin, confidence=0.8)
         if location is not None:
-            state = "jobPage"
+            state = "chooseCardPage"
+            break
+        location = pyautogui.locateCenterOnScreen(
+            matchPageImg, region=matchPageRegin, confidence=0.8)
+        if location is not None:
+            state = "matchPage"
+            location = pyautogui.locateCenterOnScreen(
+                    matchPage2to1Img, region=matchPage2to1Regin, confidence=0.8)
+            if location is not None:
+                state = "matchPage2to1"
+            else:
+                state = "matchPage3to1"
+            break
+        location = pyautogui.locateCenterOnScreen(
+            reloginImg, region=reloginRegin, confidence=0.8)
+        if location is not None:
+            state = "reloginPage"
+            break  
+        location = pyautogui.locateCenterOnScreen(
+            loginImg, region=loginRegin, confidence=0.8)
+        if location is not None:
+            state = "loginPage"
+            break 
+        location = pyautogui.locateCenterOnScreen(
+            matchOKImg, region=matchOKRegin, confidence=0.8)
+        if location is not None:
+            state = "matchOKPage"
+            break
+        location = pyautogui.locateCenterOnScreen(
+            rematchImg, region=rematchRegin, confidence=0.8)
+        if location is not None:
+            state = "rematchPage"
+            break 
+        location = pyautogui.locateCenterOnScreen(
+            matchendImg, region=matchendRegin, confidence=0.8)
+        if location is not None:
+            state = "matchendPage"
             break
         
     colorPrint("current state: {}".format(state), "cyan")
