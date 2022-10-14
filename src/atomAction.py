@@ -64,6 +64,8 @@ rematchImg = "./Img/rematch.png"
 rematchRegin = (1150, 994, 180, 40)
 matchendImg = "./Img/matchend.png"
 matchendRegin = (1717, 580, 130, 55)
+matchingImg = "./Img/matching.png"
+matchingRegin = (1843, 172, 43, 43)
 
 def getCurrentState():
     state = "loading"
@@ -119,6 +121,11 @@ def getCurrentState():
             matchendImg, region=matchendRegin, confidence=0.8)
         if location is not None:
             state = "matchendPage"
+            break
+        location = pyautogui.locateCenterOnScreen(
+            matchingImg, region=matchingRegin, confidence=0.8)
+        if location is not None:
+            state = "matchingPage"
             break
         
     colorPrint("current state: {}".format(state), "cyan")

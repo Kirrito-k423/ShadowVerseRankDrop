@@ -39,11 +39,11 @@ def start_matching():
             quickClickAbsolute(confirmPosition)
         elif state == 'rematchPage':
             quickClickAbsolute(rematchPostion)
-        elif state == 'matchOKPage':
+        elif state == 'matchOKPage' or state=='matchendPage':
             quickClickAbsolute(matchOKPostion)
-            break
         elif state == 'matching':
             break
+
     passPrint("Game Already Started!!")
 
 def surrender():
