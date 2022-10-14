@@ -8,6 +8,7 @@ from atomAction import getCurrentState
 from click import quickClickAbsolute
 from basicClass import position
 from tsjPython.tsjCommonFunc import *
+from OCR import energy_ocr, rank_score_ocr
 
 matchPagePostion = position(826,1033)
 pageCenterPostion = position(962,600)
@@ -17,6 +18,17 @@ reloginPostion = position(1065,993)
 confirmPosition = position(1260,842)
 matchOKPostion = position(1760,600)
 rematchPostion = position(1235,1013)
+escPosition = position(,)
+quitButtonPosition = position(,)
+quitConfirmPosition = position(,)
+characterPosition = position(,)
+sorryPosision = position(,)
+
+def saySorry():
+    quickClickAbsolute(characterPosition)
+    quickClickAbsolute(duosiyouPosition)
+    quickClickAbsolute(characterPosition)
+    quickClickAbsolute(sorryPosision)
 
 def start_matching():
     state = getCurrentState()
@@ -41,8 +53,22 @@ def start_matching():
             quickClickAbsolute(rematchPostion)
         elif state == 'matchOKPage' or state=='matchendPage':
             quickClickAbsolute(matchOKPostion)
+        elif state == 'pairing':
+            currentRankScore = rank_score_ocr()
+            lastRankScore = glv._get("lastRankScore")
+            if currentRankScore != lastRankScore:
+                passPrint("drop rank score from {} to {}. delta={}".format(currentRankScore, lastRankScore,currentRankScore-lastRankScore))
+                glv._set("lastRankScore", currentRankScore)
         elif state == 'matching':
+            currentEnergyNum = energy_ocr()
+            if currentEnergyNum > 5:
+                saySorry()
+                quickClickAbsolute(escPosition)
             break
+        elif state == 'quitPage':
+            quickClickAbsolute(quitButtonPosition)
+        elif state == 'quitConfirmPage':
+            quickClickAbsolute(quitConfirmPosition)
 
     passPrint("Game Already Started!!")
 
