@@ -1,12 +1,13 @@
 from basicClass import position
 import easyocr
 import pyautogui
+from tsjPython.tsjCommonFunc import *
 
-rankScorePosition = position(,)
-rankScoreRegion = position(,)
+rankScorePosition = position(1124, 712)
+rankScoreRegion = position(160, 55)
 
-energyPosition = position(,)
-energyRegion = position(,)
+energyPosition = position(1736, 867)
+energyRegion = position(56,50)
 
 def rank_score_ocr():
     im = pyautogui.screenshot(region=(rankScorePosition.x, rankScorePosition.y, rankScoreRegion.x, rankScoreRegion.y))
@@ -14,8 +15,11 @@ def rank_score_ocr():
     reader = easyocr.Reader(['ch_sim', 'en'])
     text = reader.readtext('./tmp/rank_score.png')
     ic(text)
-    if re.search(r"\d+", text) is not None:
-        score = int(re.search(r"\d+", text).group())
+    if not text:
+        return 0
+    ic(text[0][1])
+    if re.search(r"\d+", text[0][1]) is not None:
+        score = int(re.search(r"\d+", text[0][1]).group())
         ic(score)
         return score
     else:
@@ -28,8 +32,11 @@ def energy_ocr():
     reader = easyocr.Reader(['ch_sim', 'en'])
     text = reader.readtext('./tmp/energy.png')
     ic(text)
-    if re.search(r"\d+", text) is not None:
-        energy = int(re.search(r"\d+", text).group())
+    if not text:
+        return 0
+    ic(text[0][1])
+    if re.search(r"\d+", text[0][1]) is not None:
+        energy = int(re.search(r"\d+", text[0][1]).group())
         ic(energy)
         return energy
     else:

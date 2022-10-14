@@ -18,11 +18,12 @@ reloginPostion = position(1065,993)
 confirmPosition = position(1260,842)
 matchOKPostion = position(1760,600)
 rematchPostion = position(1235,1013)
-escPosition = position(,)
-quitButtonPosition = position(,)
-quitConfirmPosition = position(,)
-characterPosition = position(,)
-sorryPosision = position(,)
+escPosition = position(1850, 204)
+quitButtonPosition = position(1060, 383)
+quitConfirmPosition = position(1060, 830)
+characterPosition = position(1061,970)
+duosiyouPosition = position(1386, 1024)
+sorryPosision = position(713, 1016)
 
 def saySorry():
     quickClickAbsolute(characterPosition)
@@ -54,23 +55,24 @@ def start_matching():
         elif state == 'matchOKPage' or state=='matchendPage':
             quickClickAbsolute(matchOKPostion)
         elif state == 'pairing':
-            currentRankScore = rank_score_ocr()
+            currentRankScore = int(rank_score_ocr())
             lastRankScore = glv._get("lastRankScore")
             if currentRankScore != lastRankScore:
                 passPrint("drop rank score from {} to {}. delta={}".format(currentRankScore, lastRankScore,currentRankScore-lastRankScore))
                 glv._set("lastRankScore", currentRankScore)
         elif state == 'matching':
             currentEnergyNum = energy_ocr()
-            if currentEnergyNum > 5:
+            if currentEnergyNum > 3:
                 saySorry()
                 quickClickAbsolute(escPosition)
-            break
+            else:
+                quickClickAbsolute(matchOKPostion)
         elif state == 'quitPage':
             quickClickAbsolute(quitButtonPosition)
         elif state == 'quitConfirmPage':
             quickClickAbsolute(quitConfirmPosition)
 
-    passPrint("Game Already Started!!")
+    # passPrint("Game Already Started!!")
 
 def surrender():
     return

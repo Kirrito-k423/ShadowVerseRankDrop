@@ -45,34 +45,34 @@ from tsjPython.tsjCommonFunc import *
 #     mouseClear()
 
 decideMainIconImg = "./Img/main.png"
-decideMainIconRegin = (247, 1006, 200, 50)
+decideMainIconRegin = (270, 1000, 170, 40)
 matchPageImg = "./Img/match.png"
-matchPageRegin = (724,1000,210,60)
+matchPageRegin = (740,1000,150,50)
 matchPage2to1Img = "./Img/match2to1.png"
 matchPage2to1Regin = (1000,451,300,100)
 reloginImg = "./Img/relogin.png"
 reloginRegin = (966, 969, 200, 40)
 loginImg = "./Img/login.png"
-loginRegin = (230, 778, 62, 62)
+loginRegin = (242, 768, 67, 67)
 chooseCardImg = "./Img/chooseCard.png"
-chooseCardRegin = (1790, 259, 58, 58)
+chooseCardRegin = (1790, 270, 50, 40)
 OKImg = "./Img/OK.png"
-OKRegin = (1219, 820, 100, 30)
+OKRegin = (1212, 812, 120, 40)
 matchOKImg = "./Img/matchOK.png"
-matchOKRegin = (1722,600,100,50)
+matchOKRegin = (1700,595,120,57)
 rematchImg = "./Img/rematch.png"
-rematchRegin = (1150, 994, 180, 40)
+rematchRegin = (1150, 990, 180, 40)
 matchendImg = "./Img/matchend.png"
 matchendRegin = (1717, 580, 130, 55)
 matchingImg = "./Img/matching.png"
-matchingRegin = (1843, 172, 43, 43)
+matchingRegin = (1830, 180, 42, 42)
 
 pairingImg = "./Img/pairing.png"
-pairingRegin = (, , , )
+pairingRegin = (285, 975, 100, 45)
 quitImg = "./Img/quit.png"
-quitRegin = (, , , )
+quitRegin = (1000, 360, 100, 40)
 quitConfirmImg = "./Img/quitConfirm.png"
-quitConfirmRegin = (, , , )
+quitConfirmRegin = (1000, 812, 100, 40)
 
 def getCurrentState():
     state = "loading"
@@ -130,16 +130,6 @@ def getCurrentState():
             state = "matchendPage"
             break
         location = pyautogui.locateCenterOnScreen(
-            matchingImg, region=matchingRegin, confidence=0.8)
-        if location is not None:
-            state = "matching"
-            break
-        location = pyautogui.locateCenterOnScreen(
-            pairingImg, region=pairingRegin, confidence=0.8)
-        if location is not None:
-            state = "pairing"
-            break
-        location = pyautogui.locateCenterOnScreen(
             quitImg, region=quitRegin, confidence=0.8)
         if location is not None:
             state = "quitPage"
@@ -149,6 +139,17 @@ def getCurrentState():
         if location is not None:
             state = "quitConfirmPage"
             break
+        location = pyautogui.locateCenterOnScreen(
+            pairingImg, region=pairingRegin, confidence=0.8)
+        if location is not None:
+            state = "pairing"
+            break
+        location = pyautogui.locateCenterOnScreen(
+            matchingImg, region=matchingRegin, confidence=0.8)
+        if location is not None:
+            state = "matching"
+            break
+        
         
     colorPrint("current state: {}".format(state), "cyan")
     return state
