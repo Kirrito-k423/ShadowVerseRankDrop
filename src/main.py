@@ -49,7 +49,7 @@ def start_matching():
         else:
             stateUnchangedCount = 0
         beforeState = state
-        if stateUnchangedCount > 5:
+        if stateUnchangedCount > 8:
             flushOKClick()
             stateUnchangedCount = 0
         if state == 'mainPage':

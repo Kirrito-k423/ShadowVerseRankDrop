@@ -76,7 +76,7 @@ quitConfirmRegin = (1000, 812, 100, 40)
 
 def getCurrentState():
     state = "loading"
-    whileNums = 5
+    whileNums = 15
     while state == "loading" and whileNums > 0:
         whileNums -= 1
         ic("state check…………")
