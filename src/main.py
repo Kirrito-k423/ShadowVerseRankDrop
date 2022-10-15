@@ -9,6 +9,7 @@ from click import quickClickAbsolute
 from basicClass import position
 from tsjPython.tsjCommonFunc import *
 from OCR import energy_ocr, rank_score_ocr
+import time
 
 matchPagePostion = position(826,1033)
 pageCenterPostion = position(962,600)
@@ -24,8 +25,8 @@ quitConfirmPosition = position(1060, 830)
 characterPosition = position(1061,970)
 duosiyouPosition = position(1386, 1024)
 sorryPosision = position(713, 1016)
-rightOKPosition = position(1264, 988)
-leftOKPosition = position(857, 982)
+rightOKPosition = position(1264, 968)
+leftOKPosition = position(857, 962)
 
 def saySorry():
     quickClickAbsolute(characterPosition)
@@ -35,8 +36,10 @@ def saySorry():
 
 def flushOKClick():
     quickClickAbsolute(rightOKPosition)
-    quickClickAbsolute(reloginPosition)
     quickClickAbsolute(leftOKPosition)
+    quickClickAbsolute(reloginPosition)
+    quickClickAbsolute(pageCenterPostion)
+    quickClickAbsolute(pageCenterPostion)
 
 def start_matching():
     state = getCurrentState()
@@ -69,6 +72,7 @@ def start_matching():
             quickClickAbsolute(confirmPosition)
         elif state == 'rematchPage':
             quickClickAbsolute(rematchPostion)
+            time.sleep(0.7)
         elif state == 'matchOKPage' or state=='matchendPage':
             quickClickAbsolute(matchOKPostion)
         elif state == 'pairing':
@@ -78,7 +82,7 @@ def start_matching():
                 continue
             lastRankScore = glv._get("lastRankScore")
             if currentRankScore != lastRankScore:
-                passPrint("drop rank score from {} to {}. delta={}".format(currentRankScore, lastRankScore,currentRankScore-lastRankScore))
+                passPrint("drop rank score from {} to {}. delta={}".format(lastRankScore, currentRankScore,currentRankScore-lastRankScore))
                 glv._set("lastRankScore", currentRankScore)
         elif state == 'matching':
             currentEnergyNum = energy_ocr()
