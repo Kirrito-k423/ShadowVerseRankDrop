@@ -16,7 +16,8 @@ def rank_score_ocr():
     text = reader.readtext('./tmp/rank_score.png')
     ic(text)
     if not text:
-        return 0
+        errorPrint("rank score OCR wrong!!!")
+        return -1
     ic(text[0][1])
     if re.search(r"\d+", text[0][1]) is not None:
         score = int(re.search(r"\d+", text[0][1]).group())
@@ -24,7 +25,7 @@ def rank_score_ocr():
         return score
     else:
         errorPrint("rank score OCR wrong!!!")
-        return 0
+        return -1
     
 def energy_ocr():
     im = pyautogui.screenshot(region=(energyPosition.x, energyPosition.y, energyRegion.x, energyRegion.y))
@@ -33,7 +34,8 @@ def energy_ocr():
     text = reader.readtext('./tmp/energy.png')
     ic(text)
     if not text:
-        return 0
+        errorPrint("energy OCR wrong!!!")
+        return -1
     ic(text[0][1])
     if re.search(r"\d+", text[0][1]) is not None:
         energy = int(re.search(r"\d+", text[0][1]).group())
@@ -41,4 +43,4 @@ def energy_ocr():
         return energy
     else:
         errorPrint("energy OCR wrong!!!")
-        return 10
+        return -1

@@ -14,7 +14,7 @@ matchPagePostion = position(826,1033)
 pageCenterPostion = position(962,600)
 matchSpecifiedPagePosiotions = position(1323,541)
 matchUnlimitedPagePosiotions = position(1257,761)
-reloginPostion = position(1065,993)
+reloginPosition = position(1065,993)
 confirmPosition = position(1260,842)
 matchOKPostion = position(1760,600)
 rematchPostion = position(1235,1013)
@@ -24,6 +24,8 @@ quitConfirmPosition = position(1060, 830)
 characterPosition = position(1061,970)
 duosiyouPosition = position(1386, 1024)
 sorryPosision = position(713, 1016)
+rightOKPosition = position(1264, 988)
+leftOKPosition = position(857, 982)
 
 def saySorry():
     quickClickAbsolute(characterPosition)
@@ -31,10 +33,25 @@ def saySorry():
     quickClickAbsolute(characterPosition)
     quickClickAbsolute(sorryPosision)
 
+def flushOKClick():
+    quickClickAbsolute(rightOKPosition)
+    quickClickAbsolute(reloginPosition)
+    quickClickAbsolute(leftOKPosition)
+
 def start_matching():
     state = getCurrentState()
+    beforeState = state
+    stateUnchangedCount=0
     while state != "match_start":
         state = getCurrentState()
+        if state==beforeState:
+            stateUnchangedCount += 1
+        else:
+            stateUnchangedCount = 0
+        beforeState = state
+        if stateUnchangedCount > 5:
+            flushOKClick()
+            stateUnchangedCount = 0
         if state == 'mainPage':
             quickClickAbsolute(matchPagePostion)
         elif state == 'matchPage3to1':
@@ -45,7 +62,7 @@ def start_matching():
             else:
                 quickClickAbsolute(matchUnlimitedPagePosiotions)
         elif state == 'reloginPage' or state=='loginPage':
-            quickClickAbsolute(reloginPostion)
+            quickClickAbsolute(reloginPosition)
         elif state == 'chooseCardPage':
             quickClickAbsolute(pageCenterPostion) #默认选中间的卡组
         elif state == 'OKPage':
@@ -56,6 +73,9 @@ def start_matching():
             quickClickAbsolute(matchOKPostion)
         elif state == 'pairing':
             currentRankScore = int(rank_score_ocr())
+            if currentRankScore == -1:
+                flushOKClick()
+                continue
             lastRankScore = glv._get("lastRankScore")
             if currentRankScore != lastRankScore:
                 passPrint("drop rank score from {} to {}. delta={}".format(currentRankScore, lastRankScore,currentRankScore-lastRankScore))
@@ -65,6 +85,9 @@ def start_matching():
             if currentEnergyNum > 3:
                 saySorry()
                 quickClickAbsolute(escPosition)
+            elif currentEnergyNum == -1:
+                flushOKClick()
+                quickClickAbsolute(matchOKPostion)
             else:
                 quickClickAbsolute(matchOKPostion)
         elif state == 'quitPage':
