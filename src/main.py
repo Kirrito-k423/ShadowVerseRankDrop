@@ -16,6 +16,7 @@ pageCenterPostion = position(962,600)
 matchSpecifiedPagePosiotions = position(1323,541)
 matchUnlimitedPagePosiotions = position(1257,761)
 reloginPosition = position(1065,993)
+centerConfirmPosition = position(1065,830)
 confirmPosition = position(1260,842)
 matchOKPostion = position(1760,600)
 rematchPostion = position(1235,1013)
@@ -38,6 +39,7 @@ def flushOKClick():
     quickClickAbsolute(rightOKPosition)
     quickClickAbsolute(leftOKPosition)
     quickClickAbsolute(reloginPosition)
+    quickClickAbsolute(centerConfirmPosition)
     quickClickAbsolute(pageCenterPostion)
     quickClickAbsolute(pageCenterPostion)
 
@@ -56,7 +58,7 @@ def start_matching():
         if stateUnchangedCount > 8:
             flushOKClick()
             stateUnchangedCount = 0
-        if state == 'mainPage':
+        if state == 'mainPage' or state == 'card' or state == 'arena':
             quickClickAbsolute(matchPagePostion)
         elif state == 'matchPage3to1':
             quickClickAbsolute(pageCenterPostion)

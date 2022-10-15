@@ -74,6 +74,12 @@ quitRegin = (1000, 360, 100, 40)
 quitConfirmImg = "./Img/quitConfirm.png"
 quitConfirmRegin = (1000, 812, 100, 40)
 
+cardImg = "./Img/card.png"
+cardRegin = (1190, 1000, 200, 50)
+
+arenaImg = "./Img/arena.png"
+arenaRegin = (955, 1000, 200, 50)
+
 def getCurrentState():
     state = "loading"
     whileNums = 15
@@ -145,6 +151,18 @@ def getCurrentState():
             pairingImg, region=pairingRegin, confidence=0.8)
         if location is not None:
             state = "pairing"
+            break
+
+        location = pyautogui.locateCenterOnScreen(
+            cardImg, region=cardRegin, confidence=0.8)
+        if location is not None:
+            state = "card"
+            break
+
+        location = pyautogui.locateCenterOnScreen(
+            arenaImg, region=arenaRegin, confidence=0.8)
+        if location is not None:
+            state = "arena"
             break
         location = pyautogui.locateCenterOnScreen(
             matchingImg, region=matchingRegin, confidence=0.8)
