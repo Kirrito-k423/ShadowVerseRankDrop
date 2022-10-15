@@ -76,7 +76,9 @@ quitConfirmRegin = (1000, 812, 100, 40)
 
 def getCurrentState():
     state = "loading"
-    while state == "loading":
+    whileNums = 5
+    while state == "loading" and whileNums > 0:
+        whileNums -= 1
         ic("state check…………")
         location = pyautogui.locateCenterOnScreen(
             decideMainIconImg, region=decideMainIconRegin, confidence=0.8)
@@ -150,6 +152,7 @@ def getCurrentState():
             state = "matching"
             break
         
-        
+    if whileNums == 0:
+        state = "flush"
     colorPrint("current state: {}".format(state), "cyan")
     return state

@@ -94,6 +94,8 @@ def start_matching():
             quickClickAbsolute(quitButtonPosition)
         elif state == 'quitConfirmPage':
             quickClickAbsolute(quitConfirmPosition)
+        elif state == 'flush':
+            flushOKClick()
 
     # passPrint("Game Already Started!!")
 
