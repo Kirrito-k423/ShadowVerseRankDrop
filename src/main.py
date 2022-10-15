@@ -61,7 +61,7 @@ def start_matching():
         elif state == 'matchPage3to1':
             quickClickAbsolute(pageCenterPostion)
         elif state == 'matchPage2to1':
-            if glv._get("matchMode")=="指定":
+            if glv._get("matchMode")=="1": #指定
                 quickClickAbsolute(matchSpecifiedPagePosiotions)
             else:
                 quickClickAbsolute(matchUnlimitedPagePosiotions)

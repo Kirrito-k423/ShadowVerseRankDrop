@@ -45,8 +45,8 @@ def inputParameters():
         dest="matchMode",
         type=str,
         required=True,
-        choices=["指定", "无限制"],
-        default="指定",
+        choices=["1", "2"],
+        default="1", # 1 是 指定。 2 是 无限制
     )
     # parser.add_argument(
     #     "-hl",
