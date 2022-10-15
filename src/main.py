@@ -45,6 +45,7 @@ def start_matching():
     state = getCurrentState()
     beforeState = state
     stateUnchangedCount=0
+    matchingCount = 0
     while state != "match_start":
         state = getCurrentState()
         if state==beforeState:
@@ -86,7 +87,9 @@ def start_matching():
                 glv._set("lastRankScore", currentRankScore)
         elif state == 'matching':
             currentEnergyNum = energy_ocr()
-            if currentEnergyNum > 3:
+            matchingCount += 1
+            if currentEnergyNum > 2 or matchingCount > 15:
+                matchingCount = 0
                 saySorry()
                 quickClickAbsolute(escPosition)
             elif currentEnergyNum == -1:
