@@ -80,6 +80,9 @@ cardRegin = (1190, 1000, 200, 50)
 arenaImg = "./Img/arena.png"
 arenaRegin = (955, 1000, 200, 50)
 
+cardBuildImg = "./Img/cardBuild.png"
+cardBuildRegin = (1785, 888, 40, 40)
+
 def getCurrentState():
     state = "loading"
     whileNums = 15
@@ -163,6 +166,12 @@ def getCurrentState():
             arenaImg, region=arenaRegin, confidence=0.8)
         if location is not None:
             state = "arena"
+            break
+
+        location = pyautogui.locateCenterOnScreen(
+            cardBuildImg, region=cardBuildRegin, confidence=0.8)
+        if location is not None:
+            state = "cardBuild"
             break
         location = pyautogui.locateCenterOnScreen(
             matchingImg, region=matchingRegin, confidence=0.8)

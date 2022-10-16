@@ -29,6 +29,7 @@ sorryPosision = position(713, 1016)
 rightOKPosition = position(1264, 968)
 leftOKPosition = position(857, 962)
 returnPosition = position(353,207)
+cardBuildCancelPosition = position(1819,216)
 
 def saySorry():
     quickClickAbsolute(characterPosition)
@@ -80,6 +81,8 @@ def start_matching():
             time.sleep(0.7)
         elif state == 'matchOKPage' or state=='matchendPage':
             quickClickAbsolute(matchOKPostion)
+        elif state == 'cardBuild':
+            quickClickAbsolute(cardBuildCancelPosition)
         elif state == 'pairing':
             currentRankScore = int(rank_score_ocr())
             if currentRankScore == -1:
