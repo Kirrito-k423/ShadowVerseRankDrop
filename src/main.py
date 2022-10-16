@@ -28,6 +28,7 @@ duosiyouPosition = position(1386, 1024)
 sorryPosision = position(713, 1016)
 rightOKPosition = position(1264, 968)
 leftOKPosition = position(857, 962)
+returnPosition = position(353,207)
 
 def saySorry():
     quickClickAbsolute(characterPosition)
@@ -40,6 +41,7 @@ def flushOKClick():
     quickClickAbsolute(leftOKPosition)
     quickClickAbsolute(reloginPosition)
     quickClickAbsolute(centerConfirmPosition)
+    quickClickAbsolute(returnPosition)
     quickClickAbsolute(pageCenterPostion)
     quickClickAbsolute(pageCenterPostion)
 
