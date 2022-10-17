@@ -31,6 +31,13 @@ leftOKPosition = position(857, 962)
 returnPosition = position(353,207)
 cardBuildCancelPosition = position(1819,216)
 
+
+def drop2end():
+    if glv._get("lastRankScore") == 4500 or glv._get("lastRankScore") == 1200:
+        return 1
+    else:
+        return 0
+
 def saySorry():
     quickClickAbsolute(characterPosition)
     quickClickAbsolute(duosiyouPosition)
@@ -92,6 +99,8 @@ def start_matching():
             if currentRankScore != lastRankScore:
                 passPrint("drop rank score from {} to {}. delta={}".format(lastRankScore, currentRankScore,currentRankScore-lastRankScore))
                 glv._set("lastRankScore", currentRankScore)
+            if drop2end():
+                break
         elif state == 'matching':
             currentEnergyNum = energy_ocr()
             matchingCount += 1
@@ -117,7 +126,7 @@ def surrender():
     return
 
 def start_rank_dropping():
-    while 1:#分数降低到多少退出
+    while not drop2end():#分数降低到多少退出
         start_matching()
         surrender()
 
