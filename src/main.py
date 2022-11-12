@@ -10,7 +10,9 @@ from basicClass import position
 from tsjPython.tsjCommonFunc import *
 from OCR import energy_ocr, rank_score_ocr, info_score_ocr, wangyiUser_ocr
 import time
+import sys
 from checkJobProgress import getMatchType,checkChangeUserLogin,ifNeedCollectInfo,ifNeedDropScore,ifNeedSwitchUser,matchfinishCheck
+from OCR import loginUser_ocr
 
 matchPagePostion = position(826,1033)
 pageCenterPostion = position(962,600)
@@ -37,6 +39,10 @@ otherPagePosition = position(1765,1024)
 scoreInfoPosition = position(516,410)
 userCenterPosition = position(1246,786)
 returnMainPosition = position(1658,1005)
+switchAccountPosition = position(1771,328)
+switch1Position = position(1065,593)
+switch2Position = position(1065,714)
+
 
 def drop2end():
     if glv._get("lastRankScore") == 4500 or glv._get("lastRankScore") == 1200:
@@ -86,8 +92,11 @@ def start_matching():
             elif flag==2:
                 quickClickAbsolute(scoreInfoPosition)
                 time.sleep(1)
-            else:
+            elif ifNeedDropScore():
                 quickClickAbsolute(matchPagePostion)
+            else:
+                quickClickAbsolute(userCenterPosition)
+
         if state == 'info':
             info_score_ocr()
             flag = ifNeedCollectInfo()
@@ -95,8 +104,10 @@ def start_matching():
                 quickClickAbsolute(returnPosition)
             elif flag==2:
                 info_score_ocr()
-            else:
+            elif ifNeedDropScore():
                 quickClickAbsolute(matchPagePostion)
+            else:
+                quickClickAbsolute(otherPagePosition)
         if state == 'wangyiUser':
             flag = ifNeedCollectInfo()
             if flag==1:
@@ -105,6 +116,8 @@ def start_matching():
                 quickClickAbsolute(wangyiReturnPosition)
             elif flag==2:
                 quickClickAbsolute(wangyiReturnPosition)
+            elif ifNeedSwitchUser():
+                quickClickAbsolute(switchAccountPosition)
             else:
                 quickClickAbsolute(matchPagePostion)
         elif state == 'matchPage3to1':
@@ -118,8 +131,15 @@ def start_matching():
             else:
                 quickClickAbsolute(otherPagePosition)
         elif state == 'userloginPage':
-            checkChangeUserLogin()
-            quickClickAbsolute(userloginPosition)
+            if checkChangeUserLogin():
+                # clean & switch switchAccount
+                glv._set("currentUserScore",[sys.maxsize,sys.maxsize])
+                quickClickAbsolute(switch1Position)
+                quickClickAbsolute(switch2Position)
+                currentUserName = loginUser_ocr()
+                glv._set("currentUser",currentUserName)
+            else:
+                quickClickAbsolute(userloginPosition)
         elif state == 'reloginPage' or state=='loginPage':
             quickClickAbsolute(reloginPosition)
         elif state == 'chooseCardPage':
@@ -142,18 +162,9 @@ def start_matching():
             if currentRankScore == -1:
                 flushOKClick()
                 continue
-            currentMatchType = getMatchType()
-            ic(currentMatchType)
-            if currentMatchType == "Unlimited":
-                index = 1
-            elif currentMatchType == "Specified":
-                index = 0
-            currentUserScore = glv._get("currentUserScore")
-            if currentRankScore != currentUserScore[index]:
-                passPrint("drop rank score from {} to {}. delta={}".format(currentUserScore[index], currentRankScore,currentRankScore-lastRankScore))
-                currentUserScore[index]=currentRankScore
-                glv._set("currentUserScore",currentUserScore)
-                ic(glv._get("currentUserScore"))
+            lastRankScore = glv._get("lastRankScore")
+            if currentRankScore != lastRankScore:
+                passPrint("drop rank score from {} to {}. delta={}".format(lastRankScore, currentRankScore,currentRankScore-lastRankScore))
             if drop2end():
                 break
         elif state == 'matching':

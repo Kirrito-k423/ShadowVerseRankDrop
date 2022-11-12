@@ -14,6 +14,7 @@ def matchfinishCheck():
     else:
         index = int(glv._get("matchMode"))-1
     currentUserScore = glv._get("currentUserScore")
+    glv._set("lastRankScore",currentUserScore[index])
     currentUserScore[index]=score
     glv._set("currentUserScore",currentUserScore)
     ic(glv._get("currentUserScore"))
@@ -26,6 +27,9 @@ def checkChangeUserLogin():
     currentUserName = getCurrentUserName()
     if currentUserName in glv._get("finishedUserList"):
         passPrint("{}'s job is finished".format(currentUserName))
+        return 1
+    else:
+        return 0
 
 def getCurrentUserName():
     if glv._get("currentUser") != "?":
@@ -79,11 +83,17 @@ def ifNeedDropScore():
         glv._set("currentMatchType","Specified")
         return 1 # 指定
     else:
-        glv._set("finishedUserList",glv._get("finishedUserList").append(glv._get("currentUser")))
-        ic(glv._get("finishedUserList"))
+        errorPrint(glv._get("finishedUserList"))
+        List = glv._get("finishedUserList")
+        List.append(glv._get("currentUser"))
+        ic(List)
+        glv._set("finishedUserList",List)
+        errorPrint(glv._get("finishedUserList"))
         return 0
 
 def ifNeedSwitchUser():
+    ic(glv._get("currentUser"))
+    ic(glv._get("finishedUserList"))
     if glv._get("currentUser") in glv._get("finishedUserList"):
         return 1
     else:
