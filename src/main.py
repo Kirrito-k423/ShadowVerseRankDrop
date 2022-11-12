@@ -1,15 +1,16 @@
 
 from turtle import goto
 import config
-from process import find_mumu_process
+from process import find_mumu_process, windows_turn_on_mumu
 import global_variable as glv
 from input_process import inputParameters, isIceEnable
 from atomAction import getCurrentState
 from click import quickClickAbsolute
 from basicClass import position
 from tsjPython.tsjCommonFunc import *
-from OCR import energy_ocr, rank_score_ocr
+from OCR import energy_ocr, rank_score_ocr, info_score_ocr, wangyiUser_ocr
 import time
+from checkJobProgress import checkChangeUserLogin,ifNeedCollectInfo,ifNeedDropScore
 
 matchPagePostion = position(826,1033)
 pageCenterPostion = position(962,600)
@@ -29,7 +30,12 @@ sorryPosision = position(713, 1016)
 rightOKPosition = position(1264, 968)
 leftOKPosition = position(857, 962)
 returnPosition = position(353,207)
+wangyiReturnPosition = position(255,181)
 cardBuildCancelPosition = position(1819,216)
+userloginPosition = position(1049,708)
+otherPagePosition = position(1765,1024)
+scoreInfoPosition = position(516,410)
+userCenterPosition = position(1246,786)
 
 
 def drop2end():
@@ -69,14 +75,47 @@ def start_matching():
             flushOKClick()
             stateUnchangedCount = 0
         if state == 'mainPage' or state == 'card' or state == 'arena':
-            quickClickAbsolute(matchPagePostion)
+            if ifNeedCollectInfo():
+                quickClickAbsolute(otherPagePosition)
+            else:
+                quickClickAbsolute(matchPagePostion)
+        if state == 'other':
+            if ifNeedCollectInfo()==1 or ifNeedSwitchUser():
+                quickClickAbsolute(userCenterPosition)
+            elif ifNeedCollectInfo()==2:
+                quickClickAbsolute(scoreInfoPosition)
+                time.sleep(1)
+            else:
+                quickClickAbsolute(matchPagePostion)
+        if state == 'info':
+            info_score_ocr()
+            if ifNeedCollectInfo()==1:
+                quickClickAbsolute(returnPosition)
+            elif ifNeedCollectInfo()==2:
+                info_score_ocr()
+            else:
+                quickClickAbsolute(matchPagePostion)
+        if state == 'wangyiUser':
+            if ifNeedCollectInfo()==1:
+                currentUserName = wangyiUser_ocr()
+                glv._set("currentUser",currentUserName)
+                quickClickAbsolute(wangyiReturnPosition)
+            elif ifNeedCollectInfo()==2:
+                quickClickAbsolute(wangyiReturnPosition)
+            else:
+                quickClickAbsolute(matchPagePostion)
         elif state == 'matchPage3to1':
             quickClickAbsolute(pageCenterPostion)
         elif state == 'matchPage2to1':
-            if glv._get("matchMode")=="1": #指定
+            if ifNeedDropScore() == 1:
                 quickClickAbsolute(matchSpecifiedPagePosiotions)
-            else:
+            elif  ifNeedDropScore() == 2:
                 quickClickAbsolute(matchUnlimitedPagePosiotions)
+            else:
+                quickClickAbsolute(otherPagePosition)
+        elif state == 'userloginPage':
+            checkChangeUserLogin()
+            quickClickAbsolute(userloginPosition)
         elif state == 'reloginPage' or state=='loginPage':
             quickClickAbsolute(reloginPosition)
         elif state == 'chooseCardPage':
@@ -104,7 +143,7 @@ def start_matching():
         elif state == 'matching':
             currentEnergyNum = energy_ocr()
             matchingCount += 1
-            if currentEnergyNum > 2 or matchingCount > 15:
+            if currentEnergyNum > 0 or matchingCount > 15:
                 matchingCount = 0
                 saySorry()
                 quickClickAbsolute(escPosition)
@@ -133,5 +172,9 @@ def start_rank_dropping():
 if __name__ == '__main__':
     args = inputParameters()
     isIceEnable(args.debug)
+    windows_turn_on_mumu()
+    while not find_mumu_process():
+        time.sleep(1)
+        find_mumu_process()
     find_mumu_process()
     start_rank_dropping()

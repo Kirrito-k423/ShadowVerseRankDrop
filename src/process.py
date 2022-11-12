@@ -7,12 +7,16 @@ import win32com.client
 import global_variable as glv
 from tsjPython.tsjCommonFunc import *
 
+def windows_turn_on_mumu():
+    win32api.ShellExecute(0, 'open', r'E:/Desktop/影之诗-MuMu模拟器.lnk', '','',1)
+
 def find_mumu_process():
     origin=glv._get("mumu_start_coordinate")
     if reset_window_pos(origin.x, origin.y, glv._get("mumu_regex_name")) == 0:
         errorPrint("not found process! over")
-        sys.exit()
+        return 0
     passPrint("STEP1: find & set mumu simulator")
+    return 1
 
 def reset_window_pos(x, y, reName):
     hWndList = []

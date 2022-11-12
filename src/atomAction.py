@@ -1,6 +1,6 @@
 import pyautogui
 from tsjPython.tsjCommonFunc import *
-
+import global_variable as glv
 # def openMap():
 #     splitLine("openMap")
 #     clickShift(shiftMap)
@@ -54,6 +54,8 @@ reloginImg = "./Img/relogin.png"
 reloginRegin = (966, 969, 200, 40)
 loginImg = "./Img/login.png"
 loginRegin = (242, 768, 67, 67)
+userloginImg = "./Img/userlogin.png"
+userloginRegin = (1000, 700, 100, 30)
 chooseCardImg = "./Img/chooseCard.png"
 chooseCardRegin = (1790, 270, 50, 40)
 OKImg = "./Img/OK.png"
@@ -79,6 +81,15 @@ cardRegin = (1190, 1000, 200, 50)
 
 arenaImg = "./Img/arena.png"
 arenaRegin = (955, 1000, 200, 50)
+
+wangyiUserImg = "./Img/wangyiUser.png"
+wangyiUserRegin = (320, 156, 165, 60)
+
+infoImg = "./Img/info.png"
+infoRegin = (466, 180, 180, 40)
+
+otherImg = "./Img/other.png"
+otherRegin = (1700, 1000, 150, 40)
 
 cardBuildImg = "./Img/cardBuild.png"
 cardBuildRegin = (1785, 888, 40, 40)
@@ -119,6 +130,11 @@ def getCurrentState():
             reloginImg, region=reloginRegin, confidence=0.8)
         if location is not None:
             state = "reloginPage"
+            break 
+        location = pyautogui.locateCenterOnScreen(
+            userloginImg, region=userloginRegin, confidence=0.8)
+        if location is not None:
+            state = "userloginPage"
             break  
         location = pyautogui.locateCenterOnScreen(
             loginImg, region=loginRegin, confidence=0.8)
@@ -167,7 +183,21 @@ def getCurrentState():
         if location is not None:
             state = "arena"
             break
-
+        location = pyautogui.locateCenterOnScreen(
+            wangyiUserImg, region=wangyiUserRegin, confidence=0.8)
+        if location is not None:
+            state = "wangyiUser"
+            break
+        location = pyautogui.locateCenterOnScreen(
+            infoImg, region=infoRegin, confidence=0.8)
+        if location is not None:
+            state = "info"
+            break
+        location = pyautogui.locateCenterOnScreen(
+            otherImg, region=otherRegin, confidence=0.8)
+        if location is not None:
+            state = "other"
+            break
         location = pyautogui.locateCenterOnScreen(
             cardBuildImg, region=cardBuildRegin, confidence=0.8)
         if location is not None:
@@ -182,4 +212,5 @@ def getCurrentState():
     if whileNums == 0:
         state = "flush"
     colorPrint("current state: {}".format(state), "cyan")
+    glv._set("currentState",state)
     return state
