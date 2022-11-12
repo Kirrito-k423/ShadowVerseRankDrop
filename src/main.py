@@ -10,7 +10,7 @@ from basicClass import position
 from tsjPython.tsjCommonFunc import *
 from OCR import energy_ocr, rank_score_ocr, info_score_ocr, wangyiUser_ocr
 import time
-from checkJobProgress import checkChangeUserLogin,ifNeedCollectInfo,ifNeedDropScore
+from checkJobProgress import getMatchType,checkChangeUserLogin,ifNeedCollectInfo,ifNeedDropScore,ifNeedSwitchUser,matchfinishCheck
 
 matchPagePostion = position(826,1033)
 pageCenterPostion = position(962,600)
@@ -36,7 +36,7 @@ userloginPosition = position(1049,708)
 otherPagePosition = position(1765,1024)
 scoreInfoPosition = position(516,410)
 userCenterPosition = position(1246,786)
-
+returnMainPosition = position(1658,1005)
 
 def drop2end():
     if glv._get("lastRankScore") == 4500 or glv._get("lastRankScore") == 1200:
@@ -80,36 +80,40 @@ def start_matching():
             else:
                 quickClickAbsolute(matchPagePostion)
         if state == 'other':
-            if ifNeedCollectInfo()==1 or ifNeedSwitchUser():
+            flag = ifNeedCollectInfo()
+            if flag==1 or ifNeedSwitchUser():
                 quickClickAbsolute(userCenterPosition)
-            elif ifNeedCollectInfo()==2:
+            elif flag==2:
                 quickClickAbsolute(scoreInfoPosition)
                 time.sleep(1)
             else:
                 quickClickAbsolute(matchPagePostion)
         if state == 'info':
             info_score_ocr()
-            if ifNeedCollectInfo()==1:
+            flag = ifNeedCollectInfo()
+            if flag==1:
                 quickClickAbsolute(returnPosition)
-            elif ifNeedCollectInfo()==2:
+            elif flag==2:
                 info_score_ocr()
             else:
                 quickClickAbsolute(matchPagePostion)
         if state == 'wangyiUser':
-            if ifNeedCollectInfo()==1:
+            flag = ifNeedCollectInfo()
+            if flag==1:
                 currentUserName = wangyiUser_ocr()
                 glv._set("currentUser",currentUserName)
                 quickClickAbsolute(wangyiReturnPosition)
-            elif ifNeedCollectInfo()==2:
+            elif flag==2:
                 quickClickAbsolute(wangyiReturnPosition)
             else:
                 quickClickAbsolute(matchPagePostion)
         elif state == 'matchPage3to1':
             quickClickAbsolute(pageCenterPostion)
         elif state == 'matchPage2to1':
-            if ifNeedDropScore() == 1:
+            flag = ifNeedDropScore()
+            if flag == 1:
                 quickClickAbsolute(matchSpecifiedPagePosiotions)
-            elif  ifNeedDropScore() == 2:
+            elif  flag == 2:
                 quickClickAbsolute(matchUnlimitedPagePosiotions)
             else:
                 quickClickAbsolute(otherPagePosition)
@@ -123,7 +127,11 @@ def start_matching():
         elif state == 'OKPage':
             quickClickAbsolute(confirmPosition)
         elif state == 'rematchPage':
-            quickClickAbsolute(rematchPostion)
+            flag = matchfinishCheck()
+            if flag:
+                quickClickAbsolute(returnMainPosition)
+            else:
+                quickClickAbsolute(rematchPostion)
             time.sleep(0.7)
         elif state == 'matchOKPage' or state=='matchendPage':
             quickClickAbsolute(matchOKPostion)
@@ -134,10 +142,18 @@ def start_matching():
             if currentRankScore == -1:
                 flushOKClick()
                 continue
-            lastRankScore = glv._get("lastRankScore")
-            if currentRankScore != lastRankScore:
-                passPrint("drop rank score from {} to {}. delta={}".format(lastRankScore, currentRankScore,currentRankScore-lastRankScore))
-                glv._set("lastRankScore", currentRankScore)
+            currentMatchType = getMatchType()
+            ic(currentMatchType)
+            if currentMatchType == "Unlimited":
+                index = 1
+            elif currentMatchType == "Specified":
+                index = 0
+            currentUserScore = glv._get("currentUserScore")
+            if currentRankScore != currentUserScore[index]:
+                passPrint("drop rank score from {} to {}. delta={}".format(currentUserScore[index], currentRankScore,currentRankScore-lastRankScore))
+                currentUserScore[index]=currentRankScore
+                glv._set("currentUserScore",currentUserScore)
+                ic(glv._get("currentUserScore"))
             if drop2end():
                 break
         elif state == 'matching':
@@ -161,13 +177,11 @@ def start_matching():
 
     # passPrint("Game Already Started!!")
 
-def surrender():
-    return
 
 def start_rank_dropping():
     while not drop2end():#分数降低到多少退出
         start_matching()
-        surrender()
+
 
 if __name__ == '__main__':
     args = inputParameters()

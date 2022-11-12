@@ -22,6 +22,9 @@ loginUserRegion = position(400,48)
 wangyiUserPosition = position(390, 309)
 wangyiUserRegion = position(333,47)
 
+matchTypePosition = position(443, 815)
+matchTypeRegion = position(160,45)
+
 def rank_score_ocr():
     im = pyautogui.screenshot(region=(rankScorePosition.x, rankScorePosition.y, rankScoreRegion.x, rankScoreRegion.y))
     im.save('./tmp/rank_score.png')
@@ -114,4 +117,22 @@ def wangyiUser_ocr():
         return wangyiUser
     else:
         errorPrint("wangyiUser OCR wrong!!!")
+        return -1
+
+def matchType_ocr():
+    im = pyautogui.screenshot(region=(matchTypePosition.x, matchTypePosition.y, matchTypeRegion.x, matchTypeRegion.y))
+    im.save('./tmp/matchType.png')
+    reader = easyocr.Reader(['ch_sim', 'en'])
+    text = reader.readtext('./tmp/matchType.png')
+    ic(text)
+    if not text:
+        errorPrint("matchType OCR wrong!!!")
+        return -1
+    ic(text[0][1])
+    if text[0][1] is not None:
+        matchType = text[0][1]
+        passPrint(matchType)
+        return matchType
+    else:
+        errorPrint("matchType OCR wrong!!!")
         return -1
