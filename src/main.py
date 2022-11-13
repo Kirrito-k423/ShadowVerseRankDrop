@@ -188,9 +188,15 @@ def start_matching():
 
     # passPrint("Game Already Started!!")
 
+def finishedAccountNum():
+    if len(glv._get("finishedUserList"))== 2:
+        return 0
+    else:
+        return 1
 
 def start_rank_dropping():
-    while not drop2end():#分数降低到多少退出
+    # while not drop2end():#分数降低到多少退出
+    while finishedAccountNum():
         start_matching()
 
 
@@ -201,5 +207,8 @@ if __name__ == '__main__':
     while not find_mumu_process():
         time.sleep(1)
         find_mumu_process()
+    time.sleep(2)
+    find_mumu_process()
+    time.sleep(2)
     find_mumu_process()
     start_rank_dropping()

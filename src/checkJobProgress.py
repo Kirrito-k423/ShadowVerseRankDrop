@@ -3,6 +3,7 @@ import global_variable as glv
 from tsjPython.tsjCommonFunc import *
 from OCR import loginUser_ocr,matchType_ocr,rank_score_ocr
 import sys
+from process import kill_process_by_name
 
 def matchfinishCheck():
     score = rank_score_ocr()
@@ -25,6 +26,10 @@ def matchfinishCheck():
 
 def checkChangeUserLogin():
     currentUserName = getCurrentUserName()
+    if len(glv._get("finishedUserList"))== 2:
+        passPrint("All job is finished".format(currentUserName))
+        kill_process_by_name("NemuPlayer.exe")
+        sys.exit()
     if currentUserName in glv._get("finishedUserList"):
         passPrint("{}'s job is finished".format(currentUserName))
         return 1

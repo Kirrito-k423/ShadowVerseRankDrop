@@ -7,6 +7,10 @@ import win32com.client
 import global_variable as glv
 from tsjPython.tsjCommonFunc import *
 
+def kill_process_by_name(pname):
+    cmd = 'taskkill /F /IM ' + pname
+    os.system(cmd)
+
 def windows_turn_on_mumu():
     win32api.ShellExecute(0, 'open', r'E:/Desktop/影之诗-MuMu模拟器.lnk', '','',1)
 
@@ -27,14 +31,16 @@ def reset_window_pos(x, y, reName):
         clsname = win32gui.GetClassName(hwnd)
         title = win32gui.GetWindowText(hwnd)
         if(re.match("(.)*{}(.)*".format(reName), clsname, re.IGNORECASE) or re.match("(.)*{}(.)*".format(reName), title, re.IGNORECASE)):
-            count+=1
             ic(clsname)
             ic(title)
             left, top, right, bottom = win32gui.GetWindowRect(hwnd)
             height = bottom - top
             width = right - left
-            ic("y {} x {}".format(height, width))
-
+            ic("height {} width {}".format(height, width))
+            ic(glv._get("mumu_hight_width").y)
+            ic(glv._get("mumu_hight_width").x)
+            if height == glv._get("mumu_hight_width").x and width == glv._get("mumu_hight_width").y:
+                count+=1
             win32gui.SetWindowPos(hwnd, win32con.HWND_TOPMOST, x,
                                   y, glv._get("mumu_hight_width").y, glv._get("mumu_hight_width").x, win32con.SWP_SHOWWINDOW)
             win32gui.BringWindowToTop(hwnd)
