@@ -50,6 +50,10 @@ matchPageImg = "./Img/match.png"
 matchPageRegin = (740,1000,150,50)
 matchPage2to1Img = "./Img/match2to1.png"
 matchPage2to1Regin = (1000,470,150,100)
+
+matchPage2to1PlusImg = "./Img/match2to1Plus.png"
+matchPage2to1PlusRegin = (1550,808,150,30)
+
 reloginImg = "./Img/relogin.png"
 reloginRegin = (966, 969, 200, 40)
 loginImg = "./Img/login.png"
@@ -124,7 +128,12 @@ def getCurrentState():
             if location is not None:
                 state = "matchPage2to1"
             else:
-                state = "matchPage3to1"
+                location = pyautogui.locateCenterOnScreen(
+                    matchPage2to1PlusImg, region=matchPage2to1PlusRegin, confidence=0.8)
+                if location is not None:
+                    state = "matchPage2to1"
+                else:
+                    state = "matchPage3to1"
             break
         location = pyautogui.locateCenterOnScreen(
             reloginImg, region=reloginRegin, confidence=0.8)
