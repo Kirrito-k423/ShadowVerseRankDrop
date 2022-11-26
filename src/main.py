@@ -15,6 +15,7 @@ from checkJobProgress import getMatchType,checkChangeUserLogin,ifNeedCollectInfo
 from OCR import loginUser_ocr
 
 matchPagePostion = position(826,1033)
+pageMovePostion = position(259,685)
 pageCenterPostion = position(962,600)
 matchSpecifiedPagePosiotions = position(1323,541)
 matchUnlimitedPagePosiotions = position(1257,761)
@@ -142,6 +143,8 @@ def start_matching():
                 quickClickAbsolute(userloginPosition)
         elif state == 'reloginPage' or state=='loginPage':
             quickClickAbsolute(reloginPosition)
+        elif state == 'moveCardPage':
+            quickClickAbsolute(pageMovePostion) #默认选中间的卡组
         elif state == 'chooseCardPage':
             quickClickAbsolute(pageCenterPostion) #默认选中间的卡组
         elif state == 'OKPage':

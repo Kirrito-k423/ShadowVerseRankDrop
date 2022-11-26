@@ -60,6 +60,10 @@ loginImg = "./Img/login.png"
 loginRegin = (242, 768, 67, 67)
 userloginImg = "./Img/userlogin.png"
 userloginRegin = (1000, 700, 100, 30)
+
+moveCardPageImg = "./Img/moveCardPage.png"
+moveCardPageRegin = (255, 670, 20, 30)
+
 chooseCardImg = "./Img/chooseCard.png"
 chooseCardRegin = (1790, 270, 50, 40)
 OKImg = "./Img/OK.png"
@@ -113,6 +117,11 @@ def getCurrentState():
                     OKImg, region=OKRegin, confidence=0.8)
         if location is not None:
             state = "OKPage"
+            break
+        location = pyautogui.locateCenterOnScreen(
+                moveCardPageImg, region=moveCardPageRegin, confidence=0.8)
+        if location is not None:
+            state = "moveCardPage"
             break
         location = pyautogui.locateCenterOnScreen(
                 chooseCardImg, region=chooseCardRegin, confidence=0.8)
