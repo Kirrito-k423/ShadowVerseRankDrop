@@ -19,6 +19,9 @@ pageMovePostion = position(259,685)
 pageCenterPostion = position(962,600)
 matchSpecifiedPagePosiotions = position(1323,541)
 matchUnlimitedPagePosiotions = position(1257,761)
+
+matchSpecifiedPagePosiotions2 = position(1323,381)
+matchUnlimitedPagePosiotions2 = position(1257,594)
 reloginPosition = position(1065,993)
 centerConfirmPosition = position(1065,830)
 confirmPosition = position(1260,842)
@@ -123,6 +126,14 @@ def start_matching():
                 quickClickAbsolute(matchPagePostion)
         elif state == 'matchPage3to1':
             quickClickAbsolute(pageCenterPostion)
+        elif state == 'matchPage2profession':
+            flag = ifNeedDropScore()
+            if flag == 1:
+                quickClickAbsolute(matchSpecifiedPagePosiotions2)
+            elif  flag == 2:
+                quickClickAbsolute(matchUnlimitedPagePosiotions2)
+            else:
+                quickClickAbsolute(otherPagePosition)
         elif state == 'matchPage2to1':
             flag = ifNeedDropScore()
             if flag == 1:

@@ -51,6 +51,9 @@ matchPageRegin = (740,1000,150,50)
 matchPage2to1Img = "./Img/match2to1.png"
 matchPage2to1Regin = (1000,470,150,100)
 
+matchPage2professionImg = "./Img/profession.png"
+matchPage2professionRegin = (1000,760,140,80)
+
 matchPage2to1PlusImg = "./Img/match2to1Plus.png"
 matchPage2to1PlusRegin = (1550,808,150,30)
 
@@ -134,8 +137,13 @@ def getCurrentState():
             state = "matchPage"
             location = pyautogui.locateCenterOnScreen(
                     matchPage2to1Img, region=matchPage2to1Regin, confidence=0.8)
+
+            location2profession = pyautogui.locateCenterOnScreen(
+                    matchPage2professionImg, region=matchPage2professionRegin, confidence=0.8)
             if location is not None:
                 state = "matchPage2to1"
+            elif location2profession is not None:
+                state = "matchPage2profession"
             else:
                 location = pyautogui.locateCenterOnScreen(
                     matchPage2to1PlusImg, region=matchPage2to1PlusRegin, confidence=0.8)
